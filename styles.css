@@ -596,3 +596,129 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* Responsive hardening pass */
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+.button,
+.nav-links a,
+.pill-grid a,
+.footer-links a {
+  min-height: 44px;
+}
+
+.button {
+  gap: 8px;
+  text-align: center;
+}
+
+.card,
+.process,
+.service-detail,
+.contact-panel,
+.professional-form,
+.cta-box,
+.legal-content .container {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 980px) {
+  .nav-links {
+    max-height: calc(100vh - 76px);
+    overflow-y: auto;
+  }
+
+  .hero-grid,
+  .split,
+  .contact-layout {
+    gap: 34px;
+  }
+
+  .hero-panel,
+  .assessment-snapshot,
+  .incident-note {
+    max-width: 640px;
+  }
+}
+
+@media (max-width: 640px) {
+  h1 {
+    font-size: clamp(36px, 12vw, 48px);
+  }
+
+  h2 {
+    font-size: clamp(28px, 9vw, 38px);
+  }
+
+  .container {
+    width: min(100% - 32px, 1140px);
+  }
+
+  .nav {
+    min-height: 70px;
+  }
+
+  .nav-links {
+    inset: 70px 0 auto 0;
+    padding: 18px 16px 24px;
+  }
+
+  .brand-mark {
+    width: 38px;
+    height: 38px;
+  }
+
+  .brand strong {
+    font-size: 16px;
+  }
+
+  .brand small {
+    font-size: 11px;
+  }
+
+  .page-hero {
+    padding: 62px 0;
+  }
+
+  .hero-grid,
+  .split,
+  .contact-layout,
+  .professional-form {
+    gap: 24px;
+  }
+
+  .hero-panel,
+  .assessment-snapshot,
+  .incident-note,
+  .contact-panel,
+  .professional-form,
+  .service-detail,
+  .legal-content .container {
+    padding: 22px;
+    border-radius: 22px;
+  }
+
+  .metric-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card,
+  .process {
+    padding: 20px;
+  }
+
+  .footer {
+    padding: 34px 0;
+  }
+}

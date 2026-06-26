@@ -91,7 +91,7 @@ if (contactForm) {
       return;
     }
 
-    // Demo/local mode placeholder handler: no backend is configured for this static site.
+    // Demo/local mode handler: no backend is configured for this static site.
     // Production connection point: replace this block with a request to Formspree,
     // Resend, Supabase, Firebase, or a secure email/API endpoint. Do not collect or
     // store sensitive incident evidence in client-side code.
