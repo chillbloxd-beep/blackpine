@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Contact Blackpine Cybersecurity Inc. for security assessments, phishing and email protection, cloud account security, incident response, and digital risk advisory.">
+  <title>Contact | Blackpine Cybersecurity Inc.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Primary navigation">
+      <a href="index.html" class="brand" aria-label="Blackpine Cybersecurity home">
+        <span class="brand-mark">B</span>
+        <span><strong>Blackpine</strong><small>Cybersecurity Inc.</small></span>
+      </a>
+      <button class="menu-toggle" aria-expanded="false" aria-controls="nav-links"><span></span><span></span><span></span><span class="sr-only">Menu</span></button>
+      <div class="nav-links" id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="industries.html">Industries</a>
+        <a href="security-assessment.html">Security Assessment</a>
+        <a href="incident-response.html">Incident Response</a>
+        <a href="about.html">About</a>
+        <a class="nav-cta active" href="contact.html">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow">Contact</p>
+        <h1>Start a confidential cybersecurity conversation.</h1>
+        <p class="lead">Tell us what you are trying to protect, assess, or respond to. Blackpine will review your inquiry and follow up with practical next steps.</p>
+      </div>
+    </section>
+
+    <section class="section contact-section" id="contact-form">
+      <div class="container contact-layout">
+        <aside class="contact-panel" aria-label="Contact details">
+          <p class="eyebrow">Blackpine Cybersecurity Inc.</p>
+          <h2>Practical guidance, handled with discretion.</h2>
+          <p>Use the form for assessment requests, account security concerns, incident response support, or ongoing advisory inquiries. For sensitive incidents, share only what is necessary to begin a safe conversation.</p>
+          <div class="contact-cards">
+            <a class="contact-card" href="mailto:contact@blackpinecyber.com"><span>Email</span><strong>contact@blackpinecyber.com</strong></a>
+            <div class="contact-card"><span>Location</span><strong>Canada</strong></div>
+            <div class="contact-card"><span>Response time</span><strong>1–2 business days</strong></div>
+            <div class="contact-card"><span>Privacy</span><strong>Confidential inquiries accepted</strong></div>
+          </div>
+          <p class="mailto-fallback">Prefer email? <a href="mailto:contact@blackpinecyber.com">contact@blackpinecyber.com</a></p>
+        </aside>
+
+        <form class="contact-form professional-form" id="blackpine-contact-form" novalidate>
+          <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
+          <div class="form-field">
+            <label for="full-name">Full name</label>
+            <input id="full-name" name="fullName" autocomplete="name" required>
+            <p class="field-error" id="full-name-error"></p>
+          </div>
+          <div class="form-field">
+            <label for="work-email">Work email</label>
+            <input id="work-email" name="workEmail" type="email" autocomplete="email" required>
+            <p class="field-error" id="work-email-error"></p>
+          </div>
+          <div class="form-field">
+            <label for="company-name">Company name</label>
+            <input id="company-name" name="companyName" autocomplete="organization" required>
+            <p class="field-error" id="company-name-error"></p>
+          </div>
+          <div class="form-field">
+            <label for="phone-number">Phone number <span>optional</span></label>
+            <input id="phone-number" name="phoneNumber" type="tel" autocomplete="tel">
+            <p class="field-error" id="phone-number-error"></p>
+          </div>
+          <div class="form-field">
+            <label for="inquiry-type">Inquiry type</label>
+            <select id="inquiry-type" name="topic" required>
+              <option value="">Select an inquiry type</option>
+              <option value="security-assessment">Security Assessment</option>
+              <option value="phishing-email">Phishing & Email Protection</option>
+              <option value="cloud-account-security">Cloud & Account Security</option>
+              <option value="incident-response">Incident Response</option>
+              <option value="digital-risk-advisory">Digital Risk Advisory</option>
+              <option value="general-inquiry">General Inquiry</option>
+            </select>
+            <p class="field-error" id="inquiry-type-error"></p>
+          </div>
+          <div class="form-field full-span">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Briefly describe your goals or concerns." required></textarea>
+            <p class="field-error" id="message-error"></p>
+          </div>
+          <div class="consent-row full-span">
+            <input id="consent" name="consent" type="checkbox" required>
+            <label for="consent">I agree to be contacted by Blackpine Cybersecurity Inc. regarding this inquiry.</label>
+          </div>
+          <p class="field-error full-span" id="consent-error"></p>
+          <button class="button primary full-span" type="submit">Submit inquiry</button>
+          <p class="form-note full-span">Demo/local mode: this static site validates the form and shows a confirmation without sending data. Connect the handler in <code>script.js</code> to Formspree, Resend, Supabase, Firebase, or an email API before production use.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div><strong>Blackpine Cybersecurity Inc.</strong><p>Calm, practical cybersecurity advisory for modern businesses.</p></div>
+      <div><a href="index.html">Home</a><a href="services.html">Services</a><a href="contact.html">Contact</a></div>
+    </div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
