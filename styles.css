@@ -722,3 +722,18 @@ canvas {
     padding: 34px 0;
   }
 }
+
+.footer-disclaimer {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+  color: #b8c2ce;
+  font-size: 14px;
+  max-width: 1140px;
+}
+
+.footer-disclaimer + .copyright {
+  margin-top: 10px;
+  padding-top: 0;
+  border-top: 0;
+}
