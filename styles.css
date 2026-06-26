@@ -749,3 +749,70 @@ canvas {
 .careers-grid .card .eyebrow {
   margin-top: 0;
 }
+
+.package-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.package-card {
+  padding: 30px;
+  border: 1px solid rgba(11, 25, 44, 0.08);
+  border-radius: 28px;
+  background: #ffffff;
+  box-shadow: 0 18px 60px rgba(13, 24, 38, 0.08);
+}
+
+.package-card ul {
+  margin: 22px 0;
+  padding-left: 20px;
+  color: var(--slate);
+}
+
+.package-card li {
+  margin-bottom: 10px;
+}
+
+.featured-package {
+  border-color: rgba(47, 107, 87, 0.28);
+  box-shadow: 0 24px 70px rgba(47, 107, 87, 0.14);
+}
+
+.comparison-wrap {
+  overflow-x: auto;
+  border: 1px solid rgba(11, 25, 44, 0.08);
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 14px 48px rgba(13, 24, 38, 0.08);
+}
+
+.comparison-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid #e8edf1;
+}
+
+.comparison-table th {
+  background: #0b1524;
+  color: #ffffff;
+}
+
+.package-disclaimer {
+  margin-top: 18px;
+  color: var(--slate);
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .package-grid {
+    grid-template-columns: 1fr;
+  }
+}

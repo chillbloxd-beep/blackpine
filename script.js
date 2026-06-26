@@ -35,8 +35,23 @@ const topicSelect = document.querySelector('#inquiry-type');
 if (topicSelect) {
   const params = new URLSearchParams(window.location.search);
   const requestedTopic = params.get('topic');
+  const requestedPackage = params.get('package');
   if (requestedTopic && [...topicSelect.options].some((option) => option.value === requestedTopic)) {
     topicSelect.value = requestedTopic;
+  }
+  if (requestedPackage) {
+    const messageField = document.querySelector('#message');
+    const packageLabels = {
+      'essential-security-review': 'Essential Security Review',
+      'business-security-assessment': 'Business Security Assessment',
+      'incident-readiness-review': 'Incident Readiness Review',
+      'digital-risk-advisory': 'Digital Risk Advisory',
+    };
+    if (messageField && packageLabels[requestedPackage] && !messageField.value.trim()) {
+      messageField.value = `Package interest: ${packageLabels[requestedPackage]}
+
+`;
+    }
   }
 }
 
