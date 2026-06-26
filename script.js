@@ -49,7 +49,12 @@ if (contactForm) {
     fullName: document.querySelector('#full-name'),
     workEmail: document.querySelector('#work-email'),
     companyName: document.querySelector('#company-name'),
+    phoneNumber: document.querySelector('#phone-number'),
     topic: document.querySelector('#inquiry-type'),
+    businessType: document.querySelector('#business-type'),
+    urgency: document.querySelector('#urgency'),
+    preferredDate: document.querySelector('#preferred-date'),
+    preferredWindow: document.querySelector('#preferred-window'),
     message: document.querySelector('#message'),
     consent: document.querySelector('#consent'),
   };
@@ -60,7 +65,7 @@ if (contactForm) {
   };
 
   const clearErrors = () => {
-    ['full-name', 'work-email', 'company-name', 'inquiry-type', 'message', 'consent'].forEach((id) => setError(id, ''));
+    ['full-name', 'work-email', 'company-name', 'phone-number', 'inquiry-type', 'business-type', 'urgency', 'preferred-date', 'preferred-window', 'message', 'consent'].forEach((id) => setError(id, ''));
     status.className = 'form-status';
     status.textContent = '';
   };
@@ -82,6 +87,10 @@ if (contactForm) {
     }
     if (!fields.companyName.value.trim()) { setError('company-name', 'Please enter your company name.'); isValid = false; }
     if (!fields.topic.value) { setError('inquiry-type', 'Please choose an inquiry type.'); isValid = false; }
+    if (!fields.businessType.value) { setError('business-type', 'Please choose a business type.'); isValid = false; }
+    if (!fields.urgency.value) { setError('urgency', 'Please choose an urgency level.'); isValid = false; }
+    if (!fields.preferredDate.value) { setError('preferred-date', 'Please choose a preferred consultation date.'); isValid = false; }
+    if (!fields.preferredWindow.value) { setError('preferred-window', 'Please choose a preferred time window.'); isValid = false; }
     if (!fields.message.value.trim()) { setError('message', 'Please include a brief message.'); isValid = false; }
     if (!fields.consent.checked) { setError('consent', 'Please confirm that Blackpine may contact you about this inquiry.'); isValid = false; }
 
@@ -91,18 +100,20 @@ if (contactForm) {
       return;
     }
 
-    // Demo/local mode handler: no backend is configured for this static site.
-    // Production connection point: replace this block with a request to Formspree,
-    // Resend, Supabase, Firebase, or a secure email/API endpoint. Do not collect or
-    // store sensitive incident evidence in client-side code.
+    // Demo/local mode handler: no backend or live scheduling system is configured for this static site.
+    // Production connection point: replace this block with a secure integration such as
+    // Formspree, Resend, Supabase, Firebase, an Email API, Calendly, or Google Calendar
+    // appointment scheduling. Until then, this is a booking request form, not a confirmed
+    // appointment scheduler, and no data is sent or stored.
     status.classList.add('success');
-    status.textContent = 'Thank you. Your inquiry has been received. Blackpine will respond within 1–2 business days.';
+    const isIncident = fields.topic.value === 'incident-response' || fields.urgency.value === 'active-incident';
+    status.textContent = isIncident
+      ? 'Your incident-related inquiry has been received. Please avoid changing, deleting, or overwriting relevant logs, emails, or account activity unless necessary for safety or business continuity.'
+      : 'Thank you. Your inquiry has been received. Blackpine will respond within 1–2 business days.';
     contactForm.reset();
     status.scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
 }
-
-
 
 const talentForm = document.querySelector('#talent-network-form-element');
 if (talentForm) {
