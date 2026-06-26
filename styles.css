@@ -388,3 +388,57 @@ h3 { font-size: 21px; }
     grid-template-columns: 1fr;
   }
 }
+
+.incident-hero .split {
+  align-items: center;
+}
+
+.incident-note {
+  padding: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: var(--shadow);
+}
+
+.incident-note span {
+  display: block;
+  color: var(--pine-2);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.incident-note strong {
+  display: block;
+  margin: 14px 0;
+  color: #ffffff;
+  font-size: 32px;
+  line-height: 1.1;
+}
+
+.incident-note p,
+.incident-list p {
+  color: #d8e0e7;
+}
+
+.six-step {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.incident-cta .cta-box {
+  background: linear-gradient(135deg, #111827, #3a1f1f 55%, #17332d);
+}
+
+@media (max-width: 980px) {
+  .six-step {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .six-step {
+    grid-template-columns: 1fr;
+  }
+}
