@@ -737,3 +737,15 @@ canvas {
   padding-top: 0;
   border-top: 0;
 }
+
+.pill-grid span {
+  padding: 14px 18px;
+  background: #fff;
+  border: 1px solid #e5e9ee;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.careers-grid .card .eyebrow {
+  margin-top: 0;
+}
