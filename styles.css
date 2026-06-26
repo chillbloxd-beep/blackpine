@@ -896,3 +896,49 @@ canvas {
     padding: 22px;
   }
 }
+
+.checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.checklist-hero .button-row {
+  align-items: center;
+}
+
+@media (max-width: 760px) {
+  .checklist-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  .site-header,
+  .footer,
+  .checklist-hero .button-row,
+  .cta {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff;
+    color: #000000;
+  }
+
+  .page-hero,
+  .section {
+    padding: 20px 0;
+  }
+
+  .checklist-grid {
+    display: block;
+  }
+
+  .checklist-panel {
+    box-shadow: none;
+    border: 1px solid #999999;
+    break-inside: avoid;
+    margin-bottom: 16px;
+  }
+}

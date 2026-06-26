@@ -196,6 +196,12 @@ if (talentForm) {
   });
 }
 
+
+const printChecklistButton = document.querySelector('#print-checklist');
+if (printChecklistButton) {
+  printChecklistButton.addEventListener('click', () => window.print());
+}
+
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
