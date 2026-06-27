@@ -31,6 +31,20 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   });
 });
 
+// Forms submit to Netlify Forms in production. Netlify requires matching hidden
+// static forms for detection; email notifications are configured in the Netlify
+// dashboard. Cloudflare Email Routing handles domain email separately.
+const submitNetlifyForm = async (form) => {
+  const formData = new FormData(form);
+  const encoded = new URLSearchParams();
+  formData.forEach((value, key) => encoded.append(key, value));
+  return fetch('/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: encoded.toString(),
+  });
+};
+
 const topicSelect = document.querySelector('#inquiry-type');
 if (topicSelect) {
   const params = new URLSearchParams(window.location.search);
@@ -146,7 +160,7 @@ if (contactForm) {
       setError('work-email', 'Please enter a valid email address.');
       isValid = false;
     }
-    if (!fields.companyName.value.trim()) { setError('company-name', 'Please enter your company name.'); isValid = false; }
+    if (fields.topic.value !== 'careers-talent-network' && !fields.companyName.value.trim()) { setError('company-name', 'Please enter your company name.'); isValid = false; }
     if (!fields.topic.value) { setError('inquiry-type', 'Please choose an inquiry type.'); isValid = false; }
     if (!fields.businessType.value) { setError('business-type', 'Please choose a business type.'); isValid = false; }
     if (!fields.urgency.value) { setError('urgency', 'Please choose an urgency level.'); isValid = false; }
@@ -174,31 +188,41 @@ if (contactForm) {
       return;
     }
 
-    // Demo/local mode handler: no backend or live scheduling system is configured for this static site.
-    // Production connection point: replace this block with a secure integration such as
-    // Formspree, Resend, Supabase, Firebase, an Email API, Calendly, or Google Calendar
-    // appointment scheduling. Until then, this is a booking request form, not a confirmed
-    // appointment scheduler, and no data is sent or stored.
+    if (contactForm.elements['bot-field']?.value) {
+      status.className = 'form-status success';
+      status.textContent = 'Thank you. Your inquiry has been received. Blackpine Cybersecurity Inc. will review your message and respond within 1–2 business days.';
+      contactForm.reset();
+      showConditionalFields();
+      return;
+    }
     if (submitButton) {
       submitButton.disabled = true;
       submitButton.textContent = 'Submitting request…';
     }
     status.classList.add('submitting');
-    status.textContent = 'Reviewing details in demo/local mode…';
-    window.setTimeout(() => {
+    status.textContent = 'Submitting your request…';
+    submitNetlifyForm(contactForm)
+      .then((response) => {
+        if (!response.ok) throw new Error('Form submission failed');
       status.className = 'form-status success';
       const isIncident = fields.topic.value === 'incident-response' || fields.urgency.value === 'active-incident';
       status.textContent = isIncident
-        ? 'Thank you. Your inquiry has been received. Blackpine will respond within 1–2 business days. Please avoid changing, deleting, or overwriting relevant logs, emails, or account activity unless necessary for safety or business continuity.'
-        : 'Thank you. Your inquiry has been received. Blackpine will respond within 1–2 business days.';
+        ? 'Thank you. Your inquiry has been received. Blackpine Cybersecurity Inc. will review your message and respond within 1–2 business days. Please avoid deleting or overwriting relevant logs, emails, or account activity unless necessary for safety or business continuity.'
+        : 'Thank you. Your inquiry has been received. Blackpine Cybersecurity Inc. will review your message and respond within 1–2 business days.';
       contactForm.reset();
       showConditionalFields();
+      })
+      .catch(() => {
+        status.className = 'form-status error';
+        status.textContent = 'We could not submit your message at this time. Please try again later or contact Blackpine directly by email.';
+      })
+      .finally(() => {
       if (submitButton) {
         submitButton.disabled = false;
         submitButton.textContent = 'Submit booking request';
       }
       status.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 500);
+      });
   });
 }
 
@@ -258,7 +282,6 @@ if (talentForm) {
       setTalentError('talent-email', 'Please enter a valid email address.');
       isValid = false;
     }
-    if (!fields.location.value.trim()) { setTalentError('talent-location', 'Please enter your location.'); isValid = false; }
     if (!fields.role.value) { setTalentError('role-interest', 'Please select a role interest.'); isValid = false; }
     if (!fields.experience.value) { setTalentError('experience-level', 'Please select your experience level.'); isValid = false; }
     if (!isValidOptionalUrl(fields.linkedIn.value)) { setTalentError('linkedin-link', 'Please enter a valid http or https link.'); isValid = false; }
@@ -271,13 +294,38 @@ if (talentForm) {
       return;
     }
 
-    // Demo/local mode handler: no recruiting backend is configured for this static site.
-    // Production connection point: replace this block with a secure recruiting workflow,
-    // database, or email/API endpoint before collecting talent network submissions.
-    status.classList.add('success');
-    status.textContent = 'Thank you for your interest. Your submission has been received. Blackpine will review talent network submissions when suitable opportunities become available.';
-    talentForm.reset();
-    status.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (talentForm.elements['bot-field']?.value) {
+      status.className = 'form-status success';
+      status.textContent = 'Thank you for your interest. Your submission has been received. Blackpine will review talent network submissions when suitable opportunities become available.';
+      talentForm.reset();
+      return;
+    }
+
+    const submitButton = talentForm.querySelector('button[type="submit"]');
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = 'Submitting interest…';
+    }
+    status.classList.add('submitting');
+    status.textContent = 'Submitting your interest…';
+    submitNetlifyForm(talentForm)
+      .then((response) => {
+        if (!response.ok) throw new Error('Form submission failed');
+        status.className = 'form-status success';
+        status.textContent = 'Thank you for your interest. Your submission has been received. Blackpine will review talent network submissions when suitable opportunities become available.';
+        talentForm.reset();
+      })
+      .catch(() => {
+        status.className = 'form-status error';
+        status.textContent = 'We could not submit your message at this time. Please try again later or contact Blackpine directly by email.';
+      })
+      .finally(() => {
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = 'Submit expression of interest';
+        }
+        status.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
   });
 }
 

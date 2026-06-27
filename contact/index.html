@@ -59,7 +59,9 @@
           <p class="mailto-fallback">Prefer email? <a href="mailto:contact@blackpinecybersecurity.com">contact@blackpinecybersecurity.com</a></p>
         </aside>
 
-        <form class="contact-form professional-form" id="blackpine-contact-form" novalidate>
+        <form class="contact-form professional-form" id="blackpine-contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+          <input type="hidden" name="form-name" value="contact">
+          <p class="sr-only"><label>Do not fill this out if you are human: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
           <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
           <div class="form-field">
             <label for="full-name">Full name</label>
@@ -84,7 +86,7 @@
           </div>
           <div class="form-field">
             <label for="inquiry-type">Inquiry type</label>
-            <select id="inquiry-type" name="topic" required>
+            <select id="inquiry-type" name="inquiryType" required>
               <option value="">Select an inquiry type</option>
               <option value="security-assessment">Security Assessment</option>
               <option value="phishing-email">Phishing & Email Protection</option>
@@ -218,7 +220,7 @@
           </div>
           <p class="field-error full-span" id="consent-error"></p>
           <button class="button primary full-span" type="submit">Submit booking request</button>
-          <p class="form-note full-span">Demo/local mode: this booking request form validates details and shows a confirmation without sending data. It is not a live calendar or confirmed appointment scheduler. Submitting an inquiry does not create a client engagement. Connect the handler in <code>script.js</code> to Formspree, Resend, Supabase, Firebase, an Email API, Calendly, or Google Calendar appointment scheduling before production use.</p>
+          <p class="form-note full-span">This is a booking request, not a confirmed appointment scheduler. Submitting an inquiry does not create a client engagement. Blackpine will review your message and respond with appropriate next steps.</p>
         </form>
       </div>
     </section>
@@ -232,7 +234,7 @@
           <span><strong>Blackpine</strong><small>Cybersecurity Inc.</small></span>
         </a>
         <p>Cybersecurity advisory for modern businesses.</p>
-        <p class="footer-meta">Email: <a href="mailto:contact@blackpinecybersecurity.com">contact@blackpinecybersecurity.com</a><br>Security: <a href="mailto:security@blackpinecybersecurity.com">security@blackpinecybersecurity.com</a><br>Location: Canada</p>
+        <p class="footer-meta">Email: <a href="mailto:contact@blackpinecybersecurity.com">contact@blackpinecybersecurity.com</a><br>Security: <a href="mailto:security@blackpinecybersecurity.com">security@blackpinecybersecurity.com</a><br>Careers: <a href="mailto:careers@blackpinecybersecurity.com">careers@blackpinecybersecurity.com</a><br>Location: Canada</p>
       </div>
       <div class="footer-links" aria-label="Sitemap footer navigation">
         <a href="/">Home</a>
