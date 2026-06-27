@@ -1,3 +1,7 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
 # Netlify deployment configuration for the static Blackpine Cybersecurity Inc. site.
 # SSL/TLS certificates must be configured at the DNS/hosting layer in Netlify, not in frontend code.
 # Existing files and clean route directories are served first; unknown paths fall back to /index.html.
