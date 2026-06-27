@@ -10,7 +10,7 @@
   <meta property="og:type" content="website">
   <link rel="canonical" href="/contact/">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <title>Contact | Blackpine Cybersecurity Inc.</title>
+  <title>Contact & Booking | Blackpine Cybersecurity Inc.</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -37,8 +37,8 @@
   <main>
     <section class="page-hero">
       <div class="container">
-        <p class="eyebrow">Contact</p>
-        <h1>Start a confidential cybersecurity conversation.</h1>
+        <p class="eyebrow">Contact & Booking</p>
+        <h1>Request a cybersecurity assessment or consultation.</h1>
         <p class="lead">Tell us what you are trying to protect, assess, or respond to. Blackpine will review your inquiry and follow up with practical next steps.</p>
       </div>
     </section>
@@ -96,6 +96,18 @@
             <p class="field-error" id="inquiry-type-error"></p>
           </div>
           <div class="form-field">
+            <label for="package-interest">Package interest <span>optional</span></label>
+            <select id="package-interest" name="packageInterest">
+              <option value="">Select package interest</option>
+              <option value="essential-review">Essential Review</option>
+              <option value="business-security-assessment">Business Security Assessment</option>
+              <option value="incident-readiness-review">Incident Readiness Review</option>
+              <option value="digital-risk-advisory">Digital Risk Advisory</option>
+              <option value="not-sure">Not sure</option>
+            </select>
+            <p class="field-error" id="package-interest-error"></p>
+          </div>
+          <div class="form-field">
             <label for="business-type">Business type</label>
             <select id="business-type" name="businessType" required>
               <option value="">Select business type</option>
@@ -136,6 +148,63 @@
               <option>Flexible</option>
             </select>
             <p class="field-error" id="preferred-window-error"></p>
+          </div>
+          <fieldset class="conditional-fields full-span" id="incident-fields" hidden>
+            <legend>Incident response details</legend>
+            <p class="form-helper">Share only what is necessary to begin a safe conversation. Avoid deleting logs, emails, or suspicious account activity unless needed for safety or business continuity.</p>
+            <div class="conditional-grid">
+              <div class="form-field">
+                <label for="incident-active">Is this currently active?</label>
+                <select id="incident-active" name="incidentActive">
+                  <option value="">Select an option</option>
+                  <option>Yes</option>
+                  <option>No</option>
+                  <option>Not sure</option>
+                </select>
+                <p class="field-error" id="incident-active-error"></p>
+              </div>
+              <div class="form-field">
+                <label for="affected-system">What system or account appears affected?</label>
+                <input id="affected-system" name="affectedSystem">
+                <p class="field-error" id="affected-system-error"></p>
+              </div>
+              <div class="form-field">
+                <label for="passwords-changed">Have passwords been changed?</label>
+                <select id="passwords-changed" name="passwordsChanged">
+                  <option value="">Select an option</option>
+                  <option>Yes</option>
+                  <option>No</option>
+                  <option>Not sure</option>
+                </select>
+                <p class="field-error" id="passwords-changed-error"></p>
+              </div>
+              <div class="form-field">
+                <label for="evidence-preserved">Have relevant emails, logs, or account activity been preserved?</label>
+                <select id="evidence-preserved" name="evidencePreserved">
+                  <option value="">Select an option</option>
+                  <option>Yes</option>
+                  <option>No</option>
+                  <option>Not sure</option>
+                </select>
+                <p class="field-error" id="evidence-preserved-error"></p>
+              </div>
+            </div>
+          </fieldset>
+          <fieldset class="conditional-fields full-span" id="assessment-fields" hidden>
+            <legend>Assessment scope</legend>
+            <p class="form-helper">What would you like reviewed?</p>
+            <div class="checkbox-grid" aria-describedby="assessment-review-error">
+              <label><input type="checkbox" name="assessmentReview" value="Website"> Website</label>
+              <label><input type="checkbox" name="assessmentReview" value="Email Security"> Email Security</label>
+              <label><input type="checkbox" name="assessmentReview" value="Cloud Accounts"> Cloud Accounts</label>
+              <label><input type="checkbox" name="assessmentReview" value="Staff Access"> Staff Access</label>
+              <label><input type="checkbox" name="assessmentReview" value="Admin Panels"> Admin Panels</label>
+              <label><input type="checkbox" name="assessmentReview" value="Other"> Other</label>
+            </div>
+            <p class="field-error" id="assessment-review-error"></p>
+          </fieldset>
+          <div class="conditional-note full-span" id="careers-note" hidden>
+            <strong>Careers / Talent Network:</strong> Please use the dedicated <a href="/careers/#talent-form">Careers & Talent Network form</a> for expressions of interest.
           </div>
           <div class="form-field full-span">
             <label for="message">Message</label>

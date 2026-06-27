@@ -36,6 +36,7 @@ if (topicSelect) {
   const params = new URLSearchParams(window.location.search);
   let requestedTopic = params.get('inquiry') || params.get('topic');
   const requestedPackage = params.get('package');
+  const packageSelect = document.querySelector('#package-interest');
   const inquiryAliases = { consultation: 'general-consultation' };
   const packageTopics = {
     'essential-review': 'security-assessment',
@@ -49,6 +50,9 @@ if (topicSelect) {
     topicSelect.value = requestedTopic;
   }
   if (requestedPackage) {
+    if (packageSelect && [...packageSelect.options].some((option) => option.value === requestedPackage)) {
+      packageSelect.value = requestedPackage;
+    }
     const messageField = document.querySelector('#message');
     const packageLabels = {
       'essential-review': 'Essential Security Review',
@@ -63,6 +67,7 @@ if (topicSelect) {
 `;
     }
   }
+  topicSelect.dispatchEvent(new Event('change', { bubbles: true }));
 }
 
 
@@ -70,18 +75,27 @@ if (topicSelect) {
 const contactForm = document.querySelector('#blackpine-contact-form');
 if (contactForm) {
   const status = document.querySelector('#form-status');
+  const submitButton = contactForm.querySelector('button[type="submit"]');
+  const incidentFields = document.querySelector('#incident-fields');
+  const assessmentFields = document.querySelector('#assessment-fields');
+  const careersNote = document.querySelector('#careers-note');
   const fields = {
     fullName: document.querySelector('#full-name'),
     workEmail: document.querySelector('#work-email'),
     companyName: document.querySelector('#company-name'),
     phoneNumber: document.querySelector('#phone-number'),
     topic: document.querySelector('#inquiry-type'),
+    packageInterest: document.querySelector('#package-interest'),
     businessType: document.querySelector('#business-type'),
     urgency: document.querySelector('#urgency'),
     preferredDate: document.querySelector('#preferred-date'),
     preferredWindow: document.querySelector('#preferred-window'),
     message: document.querySelector('#message'),
     consent: document.querySelector('#consent'),
+    incidentActive: document.querySelector('#incident-active'),
+    affectedSystem: document.querySelector('#affected-system'),
+    passwordsChanged: document.querySelector('#passwords-changed'),
+    evidencePreserved: document.querySelector('#evidence-preserved'),
   };
 
   const setError = (id, message) => {
@@ -90,12 +104,23 @@ if (contactForm) {
   };
 
   const clearErrors = () => {
-    ['full-name', 'work-email', 'company-name', 'phone-number', 'inquiry-type', 'business-type', 'urgency', 'preferred-date', 'preferred-window', 'message', 'consent'].forEach((id) => setError(id, ''));
+    ['full-name', 'work-email', 'company-name', 'phone-number', 'inquiry-type', 'package-interest', 'business-type', 'urgency', 'preferred-date', 'preferred-window', 'incident-active', 'affected-system', 'passwords-changed', 'evidence-preserved', 'assessment-review', 'message', 'consent'].forEach((id) => setError(id, ''));
     status.className = 'form-status';
     status.textContent = '';
   };
 
   const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const showConditionalFields = () => {
+    const selected = fields.topic.value;
+    const isIncident = selected === 'incident-response';
+    const isAssessment = selected === 'security-assessment';
+    if (incidentFields) incidentFields.hidden = !isIncident;
+    if (assessmentFields) assessmentFields.hidden = !isAssessment;
+    if (careersNote) careersNote.hidden = selected !== 'careers-talent-network';
+  };
+
+  fields.topic.addEventListener('change', showConditionalFields);
+  showConditionalFields();
 
   contactForm.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -116,6 +141,19 @@ if (contactForm) {
     if (!fields.urgency.value) { setError('urgency', 'Please choose an urgency level.'); isValid = false; }
     if (!fields.preferredDate.value) { setError('preferred-date', 'Please choose a preferred consultation date.'); isValid = false; }
     if (!fields.preferredWindow.value) { setError('preferred-window', 'Please choose a preferred time window.'); isValid = false; }
+    if (fields.topic.value === 'incident-response') {
+      if (!fields.incidentActive.value) { setError('incident-active', 'Please indicate whether the issue appears active.'); isValid = false; }
+      if (!fields.affectedSystem.value.trim()) { setError('affected-system', 'Please describe the affected system or account.'); isValid = false; }
+      if (!fields.passwordsChanged.value) { setError('passwords-changed', 'Please indicate whether passwords have been changed.'); isValid = false; }
+      if (!fields.evidencePreserved.value) { setError('evidence-preserved', 'Please indicate whether relevant activity has been preserved.'); isValid = false; }
+    }
+    if (fields.topic.value === 'security-assessment') {
+      const selectedAssessmentItems = contactForm.querySelectorAll('input[name="assessmentReview"]:checked');
+      if (!selectedAssessmentItems.length) {
+        setError('assessment-review', 'Please choose at least one review area.');
+        isValid = false;
+      }
+    }
     if (!fields.message.value.trim()) { setError('message', 'Please include a brief message.'); isValid = false; }
     if (!fields.consent.checked) { setError('consent', 'Please confirm that Blackpine may contact you about this inquiry.'); isValid = false; }
 
@@ -130,13 +168,26 @@ if (contactForm) {
     // Formspree, Resend, Supabase, Firebase, an Email API, Calendly, or Google Calendar
     // appointment scheduling. Until then, this is a booking request form, not a confirmed
     // appointment scheduler, and no data is sent or stored.
-    status.classList.add('success');
-    const isIncident = fields.topic.value === 'incident-response' || fields.urgency.value === 'active-incident';
-    status.textContent = isIncident
-      ? 'Your incident-related inquiry has been received. Please avoid changing, deleting, or overwriting relevant logs, emails, or account activity unless necessary for safety or business continuity.'
-      : 'Thank you. Your inquiry has been received. Blackpine will respond within 1–2 business days.';
-    contactForm.reset();
-    status.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = 'Submitting request…';
+    }
+    status.classList.add('submitting');
+    status.textContent = 'Reviewing details in demo/local mode…';
+    window.setTimeout(() => {
+      status.className = 'form-status success';
+      const isIncident = fields.topic.value === 'incident-response' || fields.urgency.value === 'active-incident';
+      status.textContent = isIncident
+        ? 'Thank you. Your inquiry has been received. Blackpine will respond within 1–2 business days. Please avoid changing, deleting, or overwriting relevant logs, emails, or account activity unless necessary for safety or business continuity.'
+        : 'Thank you. Your inquiry has been received. Blackpine will respond within 1–2 business days.';
+      contactForm.reset();
+      showConditionalFields();
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Submit booking request';
+      }
+      status.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 500);
   });
 }
 
@@ -148,7 +199,7 @@ if (talentForm) {
     if (error) error.textContent = message;
   };
   const clearTalentErrors = () => {
-    ['talent-name', 'talent-email', 'talent-location', 'role-interest', 'experience-level', 'portfolio-link', 'talent-message'].forEach((id) => setTalentError(id, ''));
+    ['talent-name', 'talent-email', 'talent-location', 'role-interest', 'experience-level', 'linkedin-link', 'portfolio-link', 'talent-message'].forEach((id) => setTalentError(id, ''));
     status.className = 'form-status';
     status.textContent = '';
   };
@@ -172,6 +223,7 @@ if (talentForm) {
       location: document.querySelector('#talent-location'),
       role: document.querySelector('#role-interest'),
       experience: document.querySelector('#experience-level'),
+      linkedIn: document.querySelector('#linkedin-link'),
       portfolio: document.querySelector('#portfolio-link'),
       message: document.querySelector('#talent-message'),
     };
@@ -187,6 +239,7 @@ if (talentForm) {
     if (!fields.location.value.trim()) { setTalentError('talent-location', 'Please enter your location.'); isValid = false; }
     if (!fields.role.value) { setTalentError('role-interest', 'Please select a role interest.'); isValid = false; }
     if (!fields.experience.value) { setTalentError('experience-level', 'Please select your experience level.'); isValid = false; }
+    if (!isValidOptionalUrl(fields.linkedIn.value)) { setTalentError('linkedin-link', 'Please enter a valid http or https link.'); isValid = false; }
     if (!isValidOptionalUrl(fields.portfolio.value)) { setTalentError('portfolio-link', 'Please enter a valid http or https link.'); isValid = false; }
     if (!fields.message.value.trim()) { setTalentError('talent-message', 'Please include a short message.'); isValid = false; }
 
