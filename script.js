@@ -101,6 +101,17 @@ if (contactForm) {
   const setError = (id, message) => {
     const error = document.querySelector(`#${id}-error`);
     if (error) error.textContent = message;
+    const control = document.querySelector(`#${id}`) || (id === 'assessment-review' ? assessmentFields : null);
+    if (control) {
+      if (message) {
+        control.setAttribute('aria-invalid', 'true');
+        const describedBy = new Set((control.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean));
+        describedBy.add(`${id}-error`);
+        control.setAttribute('aria-describedby', [...describedBy].join(' '));
+      } else {
+        control.removeAttribute('aria-invalid');
+      }
+    }
   };
 
   const clearErrors = () => {
@@ -197,6 +208,17 @@ if (talentForm) {
   const setTalentError = (id, message) => {
     const error = document.querySelector(`#${id}-error`);
     if (error) error.textContent = message;
+    const control = document.querySelector(`#${id}`);
+    if (control) {
+      if (message) {
+        control.setAttribute('aria-invalid', 'true');
+        const describedBy = new Set((control.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean));
+        describedBy.add(`${id}-error`);
+        control.setAttribute('aria-describedby', [...describedBy].join(' '));
+      } else {
+        control.removeAttribute('aria-invalid');
+      }
+    }
   };
   const clearTalentErrors = () => {
     ['talent-name', 'talent-email', 'talent-location', 'role-interest', 'experience-level', 'linkedin-link', 'portfolio-link', 'talent-message'].forEach((id) => setTalentError(id, ''));

@@ -1,0 +1,17 @@
+# Netlify deployment configuration for the static Blackpine Cybersecurity Inc. site.
+# SSL/TLS certificates must be configured at the DNS/hosting layer in Netlify, not in frontend code.
+# Existing files and clean route directories are served first; unknown paths fall back to /index.html.
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
