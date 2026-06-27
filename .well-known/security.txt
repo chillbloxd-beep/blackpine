@@ -1,0 +1,3 @@
+Contact: mailto:security@blackpinecybersecurity.com
+Preferred-Languages: en
+Policy: https://blackpinecybersecurity.com/responsible-disclosure
