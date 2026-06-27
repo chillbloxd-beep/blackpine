@@ -1,8 +1,7 @@
 import { createHash } from 'node:crypto';
-import { mkdir, rm, writeFile, copyFile } from 'node:fs/promises';
+import { mkdir, rm, writeFile, copyFile, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
-import { dirname, join } from 'node:path';
-import { globSync } from 'node:fs';
+import { dirname, join, relative } from 'node:path';
 
 // Production builds are minified and source maps are disabled to reduce casual code inspection.
 // This is not a substitute for backend security. Do not place secrets in frontend code.
@@ -84,6 +83,21 @@ async function write(path, content) {
   await writeFile(path, content);
 }
 
+async function collectHtmlFiles(dir = ROOT) {
+  const entries = await readdir(dir, { withFileTypes: true });
+  const files = [];
+  for (const entry of entries) {
+    if (entry.name === 'dist' || entry.name === 'node_modules' || entry.name === '.git') continue;
+    const fullPath = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...await collectHtmlFiles(fullPath));
+    } else if (entry.isFile() && entry.name.endsWith('.html')) {
+      files.push(relative(ROOT, fullPath));
+    }
+  }
+  return files;
+}
+
 await rm(DIST, { recursive: true, force: true });
 await mkdir(ASSETS, { recursive: true });
 
@@ -104,11 +118,7 @@ await write(join(ASSETS, assets.js), js);
 await write(join(ASSETS, assets.config), config);
 await write(join(ASSETS, assets.favicon), favicon.trim());
 
-const htmlFiles = globSync('**/*.html', {
-  cwd: ROOT,
-  withFileTypes: false,
-  exclude: ['dist/**', 'node_modules/**'],
-});
+const htmlFiles = await collectHtmlFiles();
 
 for (const file of htmlFiles) {
   const source = await read(join(ROOT, file));
