@@ -34,14 +34,24 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
 const topicSelect = document.querySelector('#inquiry-type');
 if (topicSelect) {
   const params = new URLSearchParams(window.location.search);
-  const requestedTopic = params.get('topic');
+  let requestedTopic = params.get('inquiry') || params.get('topic');
   const requestedPackage = params.get('package');
+  const inquiryAliases = { consultation: 'general-consultation' };
+  const packageTopics = {
+    'essential-review': 'security-assessment',
+    'essential-security-review': 'security-assessment',
+    'business-security-assessment': 'security-assessment',
+    'incident-readiness-review': 'incident-response',
+    'digital-risk-advisory': 'digital-risk-advisory',
+  };
+  requestedTopic = inquiryAliases[requestedTopic] || requestedTopic || packageTopics[requestedPackage];
   if (requestedTopic && [...topicSelect.options].some((option) => option.value === requestedTopic)) {
     topicSelect.value = requestedTopic;
   }
   if (requestedPackage) {
     const messageField = document.querySelector('#message');
     const packageLabels = {
+      'essential-review': 'Essential Security Review',
       'essential-security-review': 'Essential Security Review',
       'business-security-assessment': 'Business Security Assessment',
       'incident-readiness-review': 'Incident Readiness Review',
