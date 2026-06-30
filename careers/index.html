@@ -76,9 +76,9 @@
     <section class="section alt" id="talent-form">
       <div class="container contact-layout">
         <div class="contact-panel"><p class="eyebrow">Talent Network Form</p><h2>Share your interest in future opportunities.</h2><p>Blackpine is not representing that roles are currently open. Expressions of interest are reviewed only when suitable consulting, project-based, or future opportunities may become relevant.</p><p class="form-note">Submitting interest does not guarantee employment, engagement, interview, response, or future opportunity.</p></div>
-        <form class="contact-form professional-form" id="talent-network-form-element" name="talent-network" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
-          <input type="hidden" name="form-name" value="talent-network">
+        <form class="contact-form professional-form" id="talent-network-form-element" name="talent-network" method="POST" action="/api/talent-network" novalidate>
           <p class="sr-only"><label>Do not fill this out if you are human: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+          <input type="hidden" name="cf-turnstile-response" class="turnstile-response">
           <div class="form-status" id="talent-form-status" role="status" aria-live="polite"></div>
           <div class="form-field"><label for="talent-name">Full name</label><input id="talent-name" name="fullName" autocomplete="name" required><p class="field-error" id="talent-name-error"></p></div>
           <div class="form-field"><label for="talent-email">Email</label><input id="talent-email" name="email" type="email" autocomplete="email" required><p class="field-error" id="talent-email-error"></p></div>
@@ -88,6 +88,7 @@
           <div class="form-field"><label for="linkedin-link">LinkedIn / portfolio link <span>optional</span></label><input id="linkedin-link" name="portfolioLink" type="url" inputmode="url"><p class="field-error" id="linkedin-link-error"></p></div>
           <div class="form-field"><label for="portfolio-link">Resume / portfolio link <span>optional</span></label><input id="portfolio-link" name="resumeLink" type="url" inputmode="url"><p class="field-error" id="portfolio-link-error"></p></div>
           <div class="form-field full-span"><label for="talent-message">Short message</label><textarea id="talent-message" name="message" required></textarea><p class="field-error" id="talent-message-error"></p></div>
+          <div class="turnstile-slot full-span" data-turnstile></div>
           <button class="button primary full-span" type="submit">Submit expression of interest</button>
           <p class="form-note full-span">Submitting interest does not guarantee employment, engagement, interview, response, or future opportunity.</p>
         </form>

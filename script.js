@@ -31,19 +31,47 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   });
 });
 
-// Current forms still submit with the Netlify Forms-compatible URL-encoded flow.
-// On Cloudflare Pages, delivery requires Pages Functions or an external form backend;
-// keep secrets server-side and configure domain email separately.
-const submitNetlifyForm = async (form) => {
+// Forms submit to Cloudflare Pages Functions. Email provider keys and Turnstile
+// secrets must stay in Cloudflare environment variables, never frontend code.
+const submitForm = async (form, endpoint) => {
   const formData = new FormData(form);
   const encoded = new URLSearchParams();
   formData.forEach((value, key) => encoded.append(key, value));
-  return fetch('/', {
+  return fetch(endpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: encoded.toString(),
   });
 };
+
+const setupTurnstile = () => {
+  const siteKey = window.BLACKPINE_SITE_CONFIG?.turnstileSiteKey;
+  const slots = document.querySelectorAll('[data-turnstile]');
+  if (!siteKey || !slots.length) return;
+
+  window.onBlackpineTurnstileLoad = () => {
+    slots.forEach((slot) => {
+      const form = slot.closest('form');
+      const responseField = form?.querySelector('input[name="cf-turnstile-response"]');
+      if (!form || !responseField || slot.dataset.rendered) return;
+      window.turnstile.render(slot, {
+        sitekey: siteKey,
+        callback: (token) => { responseField.value = token; },
+        'expired-callback': () => { responseField.value = ''; },
+        'error-callback': () => { responseField.value = ''; },
+      });
+      slot.dataset.rendered = 'true';
+    });
+  };
+
+  const script = document.createElement('script');
+  script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onBlackpineTurnstileLoad&render=explicit';
+  script.async = true;
+  script.defer = true;
+  document.head.appendChild(script);
+};
+
+setupTurnstile();
 
 const topicSelect = document.querySelector('#inquiry-type');
 if (topicSelect) {
@@ -201,7 +229,7 @@ if (contactForm) {
     }
     status.classList.add('submitting');
     status.textContent = 'Submitting your request…';
-    submitNetlifyForm(contactForm)
+    submitForm(contactForm, contactForm.getAttribute('action') || '/api/contact')
       .then((response) => {
         if (!response.ok) throw new Error('Form submission failed');
       status.className = 'form-status success';
@@ -308,7 +336,7 @@ if (talentForm) {
     }
     status.classList.add('submitting');
     status.textContent = 'Submitting your interest…';
-    submitNetlifyForm(talentForm)
+    submitForm(talentForm, talentForm.getAttribute('action') || '/api/talent-network')
       .then((response) => {
         if (!response.ok) throw new Error('Form submission failed');
         status.className = 'form-status success';

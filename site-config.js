@@ -7,4 +7,6 @@ window.BLACKPINE_SITE_CONFIG = {
   securityEmail: 'security@blackpinecybersecurity.com',
   careersEmail: 'careers@blackpinecybersecurity.com',
   responsibleDisclosurePath: '/responsible-disclosure/',
+  // Public Cloudflare Turnstile site key. Set this after creating a Turnstile widget.
+  turnstileSiteKey: '',
 };

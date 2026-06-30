@@ -5,7 +5,7 @@ import { dirname, join, relative } from 'node:path';
 
 // Production builds are minified and source maps are disabled to reduce casual code inspection.
 // This is not a substitute for backend security. Do not place secrets in frontend code.
-// Netlify Forms require form names, field names, query keys, and hidden detection forms to remain intact.
+// Cloudflare form endpoints require existing field names, query keys, and honeypot names to remain intact.
 const ROOT = process.cwd();
 const DIST = join(ROOT, 'dist');
 const ASSETS = join(DIST, 'assets');

@@ -59,9 +59,9 @@
           <p class="mailto-fallback">Prefer email? <a href="mailto:contact@blackpinecybersecurity.com">contact@blackpinecybersecurity.com</a></p>
         </aside>
 
-        <form class="contact-form professional-form" id="blackpine-contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
-          <input type="hidden" name="form-name" value="contact">
+        <form class="contact-form professional-form" id="blackpine-contact-form" name="contact" method="POST" action="/api/contact" novalidate>
           <p class="sr-only"><label>Do not fill this out if you are human: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+          <input type="hidden" name="cf-turnstile-response" class="turnstile-response">
           <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
           <div class="form-field">
             <label for="full-name">Full name</label>
@@ -219,6 +219,7 @@
             <label for="consent">I agree to be contacted by Blackpine Cybersecurity Inc. regarding this inquiry.</label>
           </div>
           <p class="field-error full-span" id="consent-error"></p>
+          <div class="turnstile-slot full-span" data-turnstile></div>
           <button class="button primary full-span" type="submit">Submit booking request</button>
           <p class="form-note full-span">This is a booking request, not a confirmed appointment scheduler. Submitting an inquiry does not create a client engagement. Blackpine will review your message and respond with appropriate next steps.</p>
         </form>
