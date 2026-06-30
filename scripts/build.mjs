@@ -130,4 +130,10 @@ if (existsSync(join(ROOT, '.well-known/security.txt'))) {
   await copyFile(join(ROOT, '.well-known/security.txt'), join(DIST, '.well-known/security.txt'));
 }
 
+for (const staticConfig of ['_headers', '_redirects']) {
+  if (existsSync(join(ROOT, staticConfig))) {
+    await copyFile(join(ROOT, staticConfig), join(DIST, staticConfig));
+  }
+}
+
 console.warn(`Built ${htmlFiles.length} HTML files to dist/ with hashed assets and no source maps.`);

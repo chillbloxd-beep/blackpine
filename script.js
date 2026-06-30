@@ -31,9 +31,9 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   });
 });
 
-// Forms submit to Netlify Forms in production. Netlify requires matching hidden
-// static forms for detection; email notifications are configured in the Netlify
-// dashboard. Cloudflare Email Routing handles domain email separately.
+// Current forms still submit with the Netlify Forms-compatible URL-encoded flow.
+// On Cloudflare Pages, delivery requires Pages Functions or an external form backend;
+// keep secrets server-side and configure domain email separately.
 const submitNetlifyForm = async (form) => {
   const formData = new FormData(form);
   const encoded = new URLSearchParams();
